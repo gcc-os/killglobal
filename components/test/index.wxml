@@ -1,0 +1,3 @@
+<view class="main" bindtap="bindClick">
+    这是组件，点击通过组件跳转并监听页面返回的数据
+</view>

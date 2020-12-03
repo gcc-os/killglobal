@@ -1,0 +1,15 @@
+{
+    "name": "killglobal",
+    "version": "1.2.31",
+    "description": "kill global data in program",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "koman",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:koman-cc/killglobal.git"
+    }
+}

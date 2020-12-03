@@ -1,0 +1,4 @@
+<!--pages/page2/index.wxml-->
+<button bindtap="bindBack">返回</button>
+<button bindtap="bindReLaunch">重启动</button>
+<button bindtap="bindRedirect">重定向</button>
