@@ -77,6 +77,16 @@ function KG_SetDataPool(data, key) { // 将数据放入数据池
     return _options;
 }
 
+function CheckDataAble(data) {
+    if (!data) {
+        return false;
+    }
+    if (typeof data != 'object') {
+        return false;
+    }
+    return true;
+}
+
 function KG_TranslateData(options_key, page = '', type) { // 传输数据的对象
     this.type = type;
     this.targetPage = page;
@@ -84,6 +94,10 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
     // *@param data: 数据
     // *@param tag: 标识 可选,一个page的onKGData可能会被很多page调用，这个tag用来标示数据来源
     this.withKGData = function (data, tag = '') { // 存储数据/传数据
+        if (!CheckDataAble(data)) {
+            console.error("withKGData(data): data need be an available Object!( data必须是一个可用的Object对象! )")
+            return;
+        }
         const _data = KillGlobal_DeepCopy(data) // 拷贝data，防止互相干扰
         if (this.targetPage && this.targetPage.onKGData) {
             // 如果知道page，直接将数据传过去

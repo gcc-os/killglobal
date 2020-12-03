@@ -17,7 +17,7 @@ Component({
     },
     methods: {
         bindClick() {
-            app.kgrouter.push("/pages/page2/index")
+            app.kgrouter.push("/pages/page2/index").withKGData('sss');
         },
     },
 });
