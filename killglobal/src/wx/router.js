@@ -84,17 +84,24 @@ function _WX_KGRouter() {
             return this.navigateBack;
         },
         get topPage(){ // 第一个page
+            const _arr = getCurrentPages();
+            if(!_arr || _arr.length == 0){
+                return null;
+            }
             return getCurrentPages()[0];
         },
         get lastPage(){ // 上一个page
             const _arr = getCurrentPages();
-            if(_arr.length <= 1){
+            if(_arr || _arr.length <= 1){
                 return null;
             }
             return _arr[_arr.length - 2];
         },
         get currentPage(){ // 当前page
             const _arr = getCurrentPages();
+            if(!_arr || _arr.length == 0){
+                return null;
+            }
             return _arr[_arr.length - 1];
         },
     };

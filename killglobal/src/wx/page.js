@@ -6,6 +6,7 @@ const KGRouter = WX_KGRouter.shareInstace();
 const KGPage = function(JSON) {
     const _onLoad = JSON.onLoad;
     JSON.onLoad = function(options) {
+        // 清除options的无用数据
         if (!options[KGRouter.optionsKey] || options[KGRouter.optionsKey] === KGRouter.optionsNull) {
             this[KGRouter.optionsKey] = KGRouter.getUniqueCode();
         } else {
@@ -16,6 +17,7 @@ const KGPage = function(JSON) {
                 delete options[KGRouter.optionsTypeKey];
             }
         }
+        // 是否有数据
         if (this.onKGData) {
             let _kg_data = KGRouter.getDataFromPool(this[KGRouter.optionsKey]);
             if (_kg_data) {

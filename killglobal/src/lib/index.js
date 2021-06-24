@@ -117,7 +117,7 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
             console.error("withKGData(data): data need be an available Object!( data必须是一个可用的Object对象! )")
             return this;
         }
-        const _data = KillGlobal_DeepCopy(data) // 拷贝data，防止互相干扰
+        let _data = KillGlobal_DeepCopy(data) // 拷贝data，防止互相干扰
         if (this.targetPage && this.targetPage.onKGData) {
             // 如果知道page，直接将数据传过去
             this.targetPage.onKGData(_data, tag || this.type);
@@ -125,6 +125,7 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
         }
         _data[KG_DATA_TAG] = tag;
         KG_SetDataPool(_data, this.translateCode);
+        _data = null;
         return this;
     }
     // *@param callback(page): 回调
@@ -139,6 +140,13 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
             return this;
         }
         KG_SetDataPool(callback, this.translateCode,"onPageReady");
+    }
+    this.release = ()=>{
+        this.type = '';
+        this.targetPage = null;
+        this.translateCode = '';
+        this.withKGData = null;
+        this.onPageReady = null;
     }
 }
 
