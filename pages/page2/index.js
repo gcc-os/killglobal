@@ -18,13 +18,19 @@ const _page = app.kgpage({
 
     },
     bindBack() {
-        app.kgrouter.back().withKGData({ back: 1 }, 'page2 back');
+        app.kgrouter.back().withKGData({ back: 1 }, 'page2 back').onPageReady(page=>{
+            page.doback();
+        });
     },
     bindReLaunch() {
-        app.kgrouter.reLaunch('/pages/index/index').withKGData({ reLaunch: 1 }, 'page2 relaunch');
+        app.kgrouter.reLaunch('/pages/index/index').withKGData({ reLaunch: 1 }, 'page2 relaunch').onPageReady(page=>{
+            page.doreLaunch();
+        });
     },
     bindRedirect() {
-        app.kgrouter.redirect('/pages/index/index').withKGData({ redirect: 1 }, 'page2 redirect');
+        app.kgrouter.redirect('/pages/index/index').withKGData({ redirect: 1 }, 'page2 redirect').onPageReady(page=>{
+            page.doRedirect();
+        });;
     },
     /**
      * 生命周期函数--监听页面初次渲染完成

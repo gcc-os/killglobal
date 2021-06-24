@@ -19,12 +19,24 @@ const _page = app.kgpage({
         })
     },
     bindPage1() {
-        app.kgrouter.push('/pages/page1/index').withKGData({ a: 1, b: 2 }, 'page');
+        app.kgrouter.push('/pages/page1/index').withKGData({ a: 1, b: 2 }, 'page').onPageReady(page=>{
+            page.showAlert();
+        });
     },
     bindPage2() {
         app.kgrouter.push('/pages/page2/index').withKGData({ a: 21, b: 22 }, 'page');
     },
+    doback(){
+        console.log("--doback");
+    },
+    doreLaunch(){
+        console.log("--doreLaunch");
+    },
+    doRedirect(){
+        console.log("--doRedirect");
+    },
     onLoad: function() {
+        console.log("app.kgrouter.currentPage",app.kgrouter.currentPage);
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,

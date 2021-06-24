@@ -16,9 +16,13 @@ const _page = app.kgpage({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-
+        console.log("app.kgrouter.currentPage",app.kgrouter.topPage);
+        console.log("app.kgrouter.currentPage",app.kgrouter.lastPage);
+        console.log("app.kgrouter.currentPage",app.kgrouter.currentPage);
     },
-
+    showAlert(){
+        console.log("showAlert----");
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

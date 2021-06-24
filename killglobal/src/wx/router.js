@@ -13,7 +13,7 @@ const {
     KG_OPTIONS_KEY, // options中的标示，用来获取key
     KG_OPTIONS_TYPE_KEY, // options中的标示，用来获取key
     KG_NUL_VALUE, //options表示空的标示
-    KG_DataPool, // 数据池
+    KG_GetDataPool,
     KG_TranslateData,
     KG_InsertKeyToParams,
     KG_DefineReadOnlyProperty,
@@ -21,7 +21,31 @@ const {
 let _share_wx_router = null;
 
 function _WX_KGRouter() {
-    const _property = {
+    const _private = {
+        // ------- 内部适用扩展 ---------
+        getDataFromPool(key, type='data') { // 获取数据
+            return KG_GetDataPool(key,type);
+        },
+        get optionsKey() {
+            return KG_OPTIONS_KEY;
+        },
+        get optionsTypeKey() {
+            return KG_OPTIONS_TYPE_KEY;
+        },
+        get optionsNull() {
+            return KG_NUL_VALUE;
+        },
+        get dataTag() {
+            return KG_DATA_TAG;
+        },
+        get getUniqueCode() {
+            return KG_GetUniqueCode;
+        },
+        get encodeUrlParams() { // 将参数编码为字符串
+            return KillGlobal_EncodeParams
+        },
+    }
+    const _router = {
         navigateTo(url, params) { // 进入下一个页面  url：地址, params：参数
             const _params = KG_InsertKeyToParams(params, KG_TYPE_NAVIGATETO);
             wx.navigateTo({ url: `${url}${KillGlobal_EncodeParams(_params, url)}` });
@@ -47,30 +71,6 @@ function _WX_KGRouter() {
             wx.navigateBack({ delta });
             return new KG_TranslateData(_key, _page, KG_TYPE_BACK);
         },
-        getDataFromPool(key) { // 获取数据
-            if (!key || key === KG_NUL_VALUE) return '';
-            const _data = KG_DataPool[key];
-            delete KG_DataPool[key]; // 从数据池删除数据
-            return _data;
-        },
-        get optionsKey() {
-            return KG_OPTIONS_KEY;
-        },
-        get optionsTypeKey() {
-            return KG_OPTIONS_TYPE_KEY;
-        },
-        get optionsNull() {
-            return KG_NUL_VALUE;
-        },
-        get dataTag() {
-            return KG_DATA_TAG;
-        },
-        get getUniqueCode() {
-            return KG_GetUniqueCode;
-        },
-        get encodeUrlParams() { // 将参数编码为字符串
-            return KillGlobal_EncodeParams
-        },
         get push() { // navigateTo别名1
             return this.navigateTo;
         },
@@ -83,9 +83,24 @@ function _WX_KGRouter() {
         get back() { // 返回 别名
             return this.navigateBack;
         },
+        get topPage(){ // 第一个page
+            return getCurrentPages()[0];
+        },
+        get lastPage(){ // 上一个page
+            const _arr = getCurrentPages();
+            if(_arr.length <= 1){
+                return null;
+            }
+            return _arr[_arr.length - 2];
+        },
+        get currentPage(){ // 当前page
+            const _arr = getCurrentPages();
+            return _arr[_arr.length - 1];
+        },
     };
     this.init = function () {
-        KG_DefineReadOnlyProperty(this, _property);
+        KG_DefineReadOnlyProperty(this, _router);
+        KG_DefineReadOnlyProperty(this, _private);
         return this;
     }
 }

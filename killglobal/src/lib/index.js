@@ -65,16 +65,35 @@ function KillGlobal_DeepCopy(data) { // *对象深拷贝
 }
 
 function KG_GetUniqueCode() { // 获取唯的编码
-    return `_data_pool_key_${parseInt(Math.random() * 1000000)}`;
+    return `_k_p_k_${parseInt(Math.random() * 1000000)}`;
 }
 
-function KG_SetDataPool(data, key) { // 将数据放入数据池
-    if (!data) return KG_NUL_VALUE;
-    let _key = key || KG_GetUniqueCode();
-    KG_DataPool[_key] = data;
-    const _options = {};
-    _options[KG_OPTIONS_KEY] = _key;
-    return _options;
+function KG_SetDataPool(data, key, type = 'data') { // 将数据放入数据池
+    const _key = key || KG_GetUniqueCode();
+    if(!KG_DataPool[_key]){
+        KG_DataPool[_key] = {data:'',onPageReady:''};
+    }
+    if(type == 'data'){
+        KG_DataPool[_key]['data'] = data;
+    }else if(type == 'onPageReady'){
+        KG_DataPool[_key]['onPageReady'] = data;
+    }
+}
+
+function KG_GetDataPool(key, type = 'data') { // 取数据
+    if (!key || key == KG_NUL_VALUE) return {};
+    const _res = KG_DataPool[key];
+    if(!_res){ return ''; }
+    if(type == 'data' && _res['data']){
+        const _data = _res['data'];
+        delete KG_DataPool[key]['data'];
+        return _data;
+    }else if(type == 'onPageReady' && _res['onPageReady']){
+        const _data = _res['onPageReady'];
+        delete KG_DataPool[key]['onPageReady'];
+        return _data;
+    }
+    return '';
 }
 
 function CheckDataAble(data) {
@@ -96,16 +115,30 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
     this.withKGData = function (data, tag = '') { // 存储数据/传数据
         if (!CheckDataAble(data)) {
             console.error("withKGData(data): data need be an available Object!( data必须是一个可用的Object对象! )")
-            return;
+            return this;
         }
         const _data = KillGlobal_DeepCopy(data) // 拷贝data，防止互相干扰
         if (this.targetPage && this.targetPage.onKGData) {
             // 如果知道page，直接将数据传过去
             this.targetPage.onKGData(_data, tag || this.type);
-            return;
+            return this;
         }
         _data[KG_DATA_TAG] = tag;
         KG_SetDataPool(_data, this.translateCode);
+        return this;
+    }
+    // *@param callback(page): 回调
+    this.onPageReady = function (callback) { // 监听onLoad
+        if (typeof callback != 'function') {
+            console.error("onPageReady(callback): callback need be an available function!( callback必须是一个可用的function! )")
+            return this;
+        }
+        if (this.targetPage) {
+            // 如果知道page
+            callback(this.targetPage);
+            return this;
+        }
+        KG_SetDataPool(callback, this.translateCode,"onPageReady");
     }
 }
 
@@ -158,6 +191,7 @@ export default {
     KG_NUL_VALUE, //options表示空的标示
     KG_DataPool, // 数据池
     KG_SetDataPool,
+    KG_GetDataPool,
     KG_TranslateData,
     KG_InsertKeyToParams,
     KG_DefineReadOnlyProperty
