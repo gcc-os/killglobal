@@ -31,10 +31,10 @@ const KGPage = function(JSON) {
             }
         }
         // onPageReady监听
-        let _kg_onPageReady = KGRouter.getDataFromPool(this[KGRouter.optionsKey],'onPageReady');
-        if (_kg_onPageReady) {
-            _kg_onPageReady(this);
-            _kg_onPageReady = null;
+        let _kg_onPage = KGRouter.getDataFromPool(this[KGRouter.optionsKey],'onPage');
+        if (_kg_onPage) {
+            _kg_onPage(this);
+            _kg_onPage = null;
         }
         _onLoad && _onLoad.call(this, options);
     }

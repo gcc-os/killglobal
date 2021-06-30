@@ -71,12 +71,12 @@ function KG_GetUniqueCode() { // 获取唯的编码
 function KG_SetDataPool(data, key, type = 'data') { // 将数据放入数据池
     const _key = key || KG_GetUniqueCode();
     if(!KG_DataPool[_key]){
-        KG_DataPool[_key] = {data:'',onPageReady:''};
+        KG_DataPool[_key] = {data:'',onPage:''};
     }
     if(type == 'data'){
         KG_DataPool[_key]['data'] = data;
-    }else if(type == 'onPageReady'){
-        KG_DataPool[_key]['onPageReady'] = data;
+    }else if(type == 'onPage'){
+        KG_DataPool[_key]['onPage'] = data;
     }
 }
 
@@ -88,9 +88,9 @@ function KG_GetDataPool(key, type = 'data') { // 取数据
         const _data = _res['data'];
         delete KG_DataPool[key]['data'];
         return _data;
-    }else if(type == 'onPageReady' && _res['onPageReady']){
-        const _data = _res['onPageReady'];
-        delete KG_DataPool[key]['onPageReady'];
+    }else if(type == 'onPage' && _res['onPage']){
+        const _data = _res['onPage'];
+        delete KG_DataPool[key]['onPage'];
         return _data;
     }
     return '';
@@ -129,9 +129,9 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
         return this;
     }
     // *@param callback(page): 回调
-    this.onPageReady = function (callback) { // 监听onLoad
+    this.onPage = function (callback) { // 监听onLoad
         if (typeof callback != 'function') {
-            console.error("onPageReady(callback): callback need be an available function!( callback必须是一个可用的function! )")
+            console.error("onPage(callback): callback need be an available function!( callback必须是一个可用的function! )")
             return this;
         }
         if (this.targetPage) {
@@ -139,14 +139,14 @@ function KG_TranslateData(options_key, page = '', type) { // 传输数据的对�
             callback(this.targetPage);
             return this;
         }
-        KG_SetDataPool(callback, this.translateCode,"onPageReady");
+        KG_SetDataPool(callback, this.translateCode,"onPage");
     }
     this.release = ()=>{
         this.type = '';
         this.targetPage = null;
         this.translateCode = '';
         this.withKGData = null;
-        this.onPageReady = null;
+        this.onPage = null;
     }
 }
 

@@ -18,17 +18,17 @@ const _page = app.kgpage({
 
     },
     bindBack() {
-        app.kgrouter.back().withKGData({ back: 1 }, 'page2 back').onPageReady(page=>{
+        app.kgrouter.back().withKGData({ back: 1 }, 'page2 back').onPage(page=>{
             page.doback();
         });
     },
     bindReLaunch() {
-        app.kgrouter.reLaunch('/pages/index/index').withKGData({ reLaunch: 1 }, 'page2 relaunch').onPageReady(page=>{
+        app.kgrouter.reLaunch('/pages/index/index').withKGData({ reLaunch: 1 }, 'page2 relaunch').onPage(page=>{
             page.doreLaunch();
         });
     },
     bindRedirect() {
-        app.kgrouter.redirect('/pages/index/index').withKGData({ redirect: 1 }, 'page2 redirect').onPageReady(page=>{
+        app.kgrouter.redirect('/pages/index/index').withKGData({ redirect: 1 }, 'page2 redirect').onPage(page=>{
             page.doRedirect();
         });;
     },
