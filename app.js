@@ -1,12 +1,12 @@
 //app.js
-import { getKGWechat } from './killglobal/index';
+import { getWechat } from './killglobal/index';
 
 App({
     get kgrouter() {
-        return getKGWechat().router;
+        return getWechat().router;
     },
     get kgpage() {
-        return getKGWechat().page;
+        return getWechat().page;
     },
     onLaunch: function () {
         // 展示本地存储能力
