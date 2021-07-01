@@ -99,7 +99,7 @@ pages/page1/index.js
 
 参数 :
 
-- delta: 返回的页面层数，缺省默认未1
+- delta: 返回的页面层数，缺省默认返回1层
 
 ## reLaunch —— 重启
 ### getWechat().router.reLaunch(path, options)
