@@ -21,7 +21,7 @@ const _page = app.kgpage({
         console.log("app.kgrouter.currentPage",app.kgrouter.currentPage);
     },
     showAlert(){
-        console.log("showAlert----");
+        console.log("page1 fn showAlert----");
     },
     /**
      * 生命周期函数--监听页面初次渲染完成

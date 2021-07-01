@@ -12,6 +12,8 @@ export function getKGWechat() {
     return _wx;
 }
 
+export const getWechat = getKGWechat;
+
 export function getKGVue() {
     if (!_wx) {
         _wx = {};
