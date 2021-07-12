@@ -19,7 +19,7 @@ const _page = app.kgpage({
         })
     },
     bindPage1() {
-        app.kgrouter.push('/pages/page1/index/index',{}).withKGData({ a: 1, b: 2 }, 'page').onPage(page=>{
+        app.kgrouter.push('/pages/page1/index/index').withKGData({ a: 1, b: 2 }, 'page').onPage(page=>{
             page.showAlert();
         });
     },
