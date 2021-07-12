@@ -46,29 +46,33 @@ function _WX_KGRouter() {
         },
     }
     const _router = {
-        navigateTo(url, params) { // 进入下一个页面  url：地址, params：参数
+        navigateTo(url, params, callback) { // 进入下一个页面  url：地址, params：参数
+            const _callback = callback || this.callBack;
             const _params = KG_InsertKeyToParams(params, KG_TYPE_NAVIGATETO);
-            wx.navigateTo({ url: `${url}${KillGlobal_EncodeParams(_params, url)}` });
+            wx.navigateTo({ url: `${url}${KillGlobal_EncodeParams(_params, url)}`, ..._callback});
             return new KG_TranslateData(_params[KG_OPTIONS_KEY]);
         },
-        redirectTo(url, params) { // 重定向  url：地址, params：参数
+        redirectTo(url, params, callback) { // 重定向  url：地址, params：参数
+            const _callback = callback || this.callBack;
             const _params = KG_InsertKeyToParams(params, KG_TYPE_REDIRECT);
-            wx.redirectTo({ url: `${url}${KillGlobal_EncodeParams(_params, url)}` });
+            wx.redirectTo({ url: `${url}${KillGlobal_EncodeParams(_params, url)}`, ..._callback });
             return new KG_TranslateData(_params[KG_OPTIONS_KEY]);
         },
-        reLaunch(url, params) { // 重启到某个页面 url：地址, params：参数
+        reLaunch(url, params, callback) { // 重启到某个页面 url：地址, params：参数
+            const _callback = callback || this.callBack;
             const _params = KG_InsertKeyToParams(params, KG_TYPE_RELAUNCH);
-            wx.reLaunch({ url: `${url}${KillGlobal_EncodeParams(_params, url)}` });
+            wx.reLaunch({ url: `${url}${KillGlobal_EncodeParams(_params, url)}`, ..._callback});
             return new KG_TranslateData(_params[KG_OPTIONS_KEY]);
         },
-        navigateBack(delta = 1) { // 返回某个页面
+        navigateBack(delta = 1, callback) { // 返回某个页面
+            const _callback = callback || this.callBack;
             const _pages = getCurrentPages();
             let _ind = _pages.length - delta - 1;
             _ind = _ind > -1 ? _ind : 0;
             _ind = _ind > _pages.length - 1 ? _pages.length - 1 : _ind;
             const _page = _pages[_ind]; // 目地页面
             const _key = _page[KG_OPTIONS_KEY]; // 目地页面的key
-            wx.navigateBack({ delta });
+            wx.navigateBack({ delta, ..._callback});
             return new KG_TranslateData(_key, _page, KG_TYPE_BACK);
         },
         get push() { // navigateTo别名1
@@ -106,6 +110,7 @@ function _WX_KGRouter() {
         },
     };
     this.init = function () {
+        this.callBack = {}; // 默认相应函数
         KG_DefineReadOnlyProperty(this, _router);
         KG_DefineReadOnlyProperty(this, _private);
         return this;

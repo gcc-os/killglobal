@@ -1,9 +1,22 @@
 //app.js
 import { getWechat } from './killglobal/index';
 
+const Router = getWechat().router;
+Router.callBack = {
+    fail(err){
+        console.log("router fail",err);
+    },
+    success(){
+        console.log("router success");
+    },
+    complete(){
+        console.log("router complete");
+    },
+}
+
 App({
     get kgrouter() {
-        return getWechat().router;
+        return Router;
     },
     get kgpage() {
         return getWechat().page;
