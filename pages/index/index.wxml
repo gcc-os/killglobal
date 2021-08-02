@@ -1,8 +1,15 @@
 <!--index.wxml-->
 <test></test>
 <view class="container">
+    <canvas type="2d" id="myCanvas">
+        <view style="position:relative; width: 100%; background: #d3d3d3; min-height: 100px"></view>
+    </canvas>
+    <view class="svg">
+        <image src="/assets/test.svg?fill=#000000"></image>
+    </view>
     <view class="userinfo">
-        <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+        <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称
+        </button>
         <block wx:else>
             <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
             <text class="userinfo-nickname">{{userInfo.nickName}}</text>
@@ -13,4 +20,8 @@
     </view>
     <button bindtap="bindPage1">page1</button>
     <button bindtap="bindPage2">page2</button>
+
+    <view style="position:relative; width: 100%; background: #d3d3d3; min-height: 100px">
+        <button style="position: relative; left: -60rpx; top: 60rpx">按钮</button>
+    </view>
 </view>

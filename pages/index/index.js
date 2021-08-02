@@ -18,6 +18,73 @@ const _page = app.kgpage({
             url: '../logs/logs'
         })
     },
+    createImg(){
+        const query = wx.createSelectorQuery()
+        query.select('#myCanvas')
+      .fields({ node: true, size: true })
+      .exec((res) => {
+        const canvas = res[0].node
+        const ctx = canvas.getContext('2d')
+        this.getImage(ctx);
+        // const dpr = wx.getSystemInfoSync().pixelRatio
+        // canvas.width = res[0].width * dpr
+        // canvas.height = res[0].height * dpr
+        // ctx.scale(dpr, dpr)
+        // ctx.fillRect(0, 0, 100, 100)
+
+      })
+    },
+    getImage(ctx){
+        const url = 'https://static-cdn.verystar.net/e/hyatt/book/park_hyatt_logo.svg';
+        wx.getImageInfo({
+            src: url,
+            success: function (res) {
+                console.log(res);
+                this.executeDraw(ctx, res.path)
+            },
+            fail(err){
+                console.log(err);
+            }
+        })
+    },
+    executeDraw(ctx,photo){
+        // const photo = 'https://static-cdn.verystar.net/e/hyatt/book/park_hyatt_logo.svg';
+        // wx.getImageInfo({
+        //     src: photo,
+        //     success: function (res) {
+                
+        //     },
+        //     fail(err){
+        //         console.log("err = ",err);
+        //     },
+        // })
+        const _this = this;
+        const res = {
+            height: 100,
+            width: 100
+        }
+        // console.log(res.height)
+        // console.log(res.width)
+        var towidth = 344;           //按宽度344px的比例压缩
+        var toheight = Math.trunc(344*res.height/res.width);        //根据图片比例换算出图片高度
+        _this.setData({
+        canvas_h: toheight
+        })
+        ctx.drawImage(photo, 0, 0, res.width, res.height, 0, 0, towidth, toheight)
+        ctx.draw(false, function () {
+        wx.canvasToTempFilePath({
+            canvasId: 'photo_canvas',
+            fileType:"jpg",
+            success: function (res) {
+                console.log("res.tempFilePath ============= ");
+                console.log(res.tempFilePath);
+            },
+            fail(err){
+                console.log("res.tempFilePath ============= ",err);
+            }
+        }, this)
+        })
+    },
     bindPage1() {
         app.kgrouter.push('/pages/page1/index/index').withKGData({ a: 1, b: 2 }, 'page').onPage(page=>{
             page.showAlert();
@@ -36,7 +103,8 @@ const _page = app.kgpage({
         console.log("--doRedirect");
     },
     onLoad: function() {
-        console.log("app.kgrouter.currentPage",app.kgrouter.currentPage);
+        this.createImg();
+        // console.log("app.kgrouter.currentPage",app.kgrouter.currentPage);
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,

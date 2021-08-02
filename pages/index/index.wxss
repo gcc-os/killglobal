@@ -19,3 +19,14 @@
 .usermotto {
   margin-top: 200px;
 }
+
+.svg {
+  text-align: center;
+  padding: 100rpx;
+}
+
+.svg image{
+  display: inline-block;
+  width: 100rpx;
+  height: 100rpx;
+}
